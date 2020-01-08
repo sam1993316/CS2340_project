@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <h2>Start Game</h2>
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <h3>{{ form.name.label }}:</h3>
+    {{ form.name(size=32) }}
+    <h3>{{ form.difficulty.label }}:</h3>
+    {% for level in form.difficulty %}
+      {{ level }}
+      {{ level.label }}
+    {% endfor %}
+    <h3>Skills:</h3>
+    <table style="border:0px solid black;margin:auto">
+      <tr>
+        <th>{{ form.pilot_skill.label }}:</th>
+        <th>{{ form.pilot_skill }}</th>
+      </tr>
+      <tr>
+        <th>{{ form.fighter_skill.label }}:</th>
+        <th>{{ form.fighter_skill }}</th>
+      </tr>
+      <tr>
+        <th>{{ form.merchant_skill.label }}:</th>
+        <th>{{ form.merchant_skill }}</th>
+      </tr>
+      <tr>
+        <th>{{ form.engineer_skill.label }}:</th>
+        <th>{{ form.engineer_skill }}</th>
+      </tr>
+    </table>
+    <br />
+    {% if form.errors %}
+      <div style="color:red;background-color:mistyrose;display:inline-block;padding:6px">
+        {% for message in form.error_message_set %}
+          {{ message }}<br />
+        {% endfor %}
+      </div>
+      <br />
+    {% else %}
+      <br />
+    {% endif %}
+    <br />
+    {{ form.done() }}
+  </form>
+{% endblock %}

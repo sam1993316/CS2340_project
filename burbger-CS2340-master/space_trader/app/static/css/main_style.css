@@ -1,0 +1,37 @@
+html, body {
+  background-color: navy;
+  color: white;
+  margin: 0;
+  height: 100%;
+}
+
+#backdrop {
+  box-sizing: border-box;
+  max-width: 800px;
+  min-height: 100%;
+  padding: 75px;
+  margin: 0 auto;
+  background-color: black;
+}
+
+#header {
+  position: sticky;
+  left: -10px;
+  z-index: 100;
+  top: 0;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px 10px 0 0;
+  background-color: black;
+}
+
+.br {
+  width: 100%;
+  height: 0;
+  border: 1px outset lightgrey;
+  margin: 20px 0;
+}
+
+.hidden {
+  display: none;
+}

@@ -1,0 +1,51 @@
+Author: Jimmy Matalenas
+ID: 6.3.2 (M6, police (third NPC), flee (second action))
+Description: Tests fleeing from police encounters, ensuring the player is able to run from the police when they have a sufficient pilot skill and testing that the player cannot run if not. Additionally, applies the correct consequences to fleeing.
+
+This case specifically checks:
+- if the player flees from the police successfully, that their inventory, health, etc. are unchanged
+- if the player fails to flee from the police, that the items to confiscate are removed, they are fined, and their health depleted by the police's fighter skill
+- the player's location unconditionally returns to where they were before the encounter and the player is unconditionally no longer in an encounter.
+
+Pre-conditions:
+    The player:
+        exists,
+        has items for the police to confiscate,
+        has nonzero health the police can deplete (otherwise, game over),
+        enters a police encounter when attempting to travel,
+        attempts to flee from the encounter
+
+Use case:
+    The player's stats are checked against the police.
+    The first skill check is in the situation where the player has a better pilot skill.
+    The second, the player has an equal pilot skill.
+    The third, the player has a lesser pilot skill.
+
+Post-conditions:
+    The player:
+        exists,
+        is in the region they attempted to travel from,
+        is no longer in an encounter
+
+Other notes:
+      Make the encounter logic print out the stat block of the encountered NPC and compare with the player to check skill differences
+
+Expected outcomes:
+         If their pilot skill is greater (as in the first case):
+            The player flees successfully:
+                Their location is set to their previous location
+                Their inventory, money, and health are unaffected
+
+         If their pilot skill is lesser or equal (as in the second and third cases):
+            The player fails to flee:
+                Their location is set to their previous location
+                The items the police want to confiscate are removed
+                Their money is reduced by a random amount within the fine's bounds
+                Their health is reduced by the police's fighter skill
+
+Actual result:
+       Successful check is correct, player's health is unchanged, no items are confiscated, no fine is incurred; the player ends up back in the expected region and exits the encounter
+       Equal check is correct, same behavior as failed check, as expected
+       Failed check is correct, player's health decreases, the correct number of items are confiscated, and a fine is incurred; the player ends up back in the expected region and exits the encounter
+
+The application passes this test.

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Welcome to Space Trader!</h2>
+<h4>Difficulty:</h4>
+{{ instance.player.difficultyName }}
+<h4>Your stats:</h4>
+{% for stat in instance.player.stats %}
+{{ stat|capitalize }}: {{ instance.player.stats[stat] }}<br />
+{% endfor %}
+<h4>Your money:</h4>
+{{ instance.player.money }} credits
+{% endblock main %}

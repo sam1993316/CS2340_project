@@ -1,0 +1,39 @@
+Author: Sabrina Huang
+
+Test Case ID: 4.1
+
+Description: Player object’s travel function works as expected
+
+Traceability: Player travels to correct region based on x-y coordinates, given that they have enough fuel. If not enough fuel, travel button is disabled. Fuel should decrease after each successful travel.
+
+Actual Test Case: 
+1. Start new game 
+2. Attempt to travel to a region with cost greater than fuel
+3. Travel to region with cost less than fuel
+4. Attempt to travel to a region with cost greater than fuel
+5. Refill gas tank to exactly the amount of fuel to get to a location
+6. Travel to location that requires exact amount of fuel
+7. Attempt to travel anywhere else on an empty tank
+
+Expected Output: 
+1. After step 1, we start with a full tank of fuel
+2. After step 2, button should be disabled therefore we can’t travel
+3. After step 3, we should be in the new region
+4. After step 4, button should be disabled therefore we can’t travel
+5. After step 5, we should have enough fuel to be able to get to a location
+6. After step 6, we should be in the new region
+7. After step 7, button should be disabled therefore we can’t travel
+
+Actual Output: 
+1. Game works as expected after Step 1
+2. Game works as expected after Step 2
+3. Game works as expected after Step 3
+4. Game works as expected after Step 4
+5. Game works as expected after Step 5
+6. Game does not work as expected. Travel button is disabled even though Player has exact amount of fuel required. Travel button is only enabled if Player has more fuel than required.
+7. Game works as expected after Step 7
+
+Pass/Fail Results: Fail
+
+Fault Analysis: 
+Travel function only works when Player has more fuel than required to travel to a new location. This function should be fixed by allowing Player to travel when they have greater than or equal amount of fuel.

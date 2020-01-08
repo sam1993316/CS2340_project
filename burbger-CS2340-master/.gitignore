@@ -1,0 +1,9 @@
+# Prevent MacOS stuff from getting put to our repository
+.DS_Store
+# Prevent emacs autosaves and backups from getting put to the repository
+*~
+.#*
+# Prevent .idea folders
+.idea/
+# Prevent pycache
+__pycache__/

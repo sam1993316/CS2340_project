@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <div style="text-align:center">
+    <h1>Welcome to Space Trader!</h1>
+    <a href="{{ url_for('start') }}">{{ form.start_game() }}</a>
+  </div>
+{% endblock %}

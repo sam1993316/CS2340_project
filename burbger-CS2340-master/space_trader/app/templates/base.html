@@ -1,0 +1,25 @@
+<html>
+  <head>
+    {% if form.title %}
+    <title>Space Trader: {{ form.title }}</title>
+    {% else %}
+    <title>Space Trader</title>
+    {% endif %}
+    <!-- Place base javascript files here -->
+    {% block script %}{% endblock %}
+    <!-- Place base css files here -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main_style.css') }}"></link>
+    {% block style %}{% endblock %}
+  </head>
+  <body>
+    <div id="backdrop">
+      <div id="header">
+        Space Trader
+        <div class="br"></div>
+      </div>
+      <div style="text-align:center;margin:auto">
+        {% block main %}{% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+Author: Jason Liu
+ID: 6.1.1 (M6, Bandits, fight)
+Description: This test cases involves testing the output of encountering the bandits, specifically the interaction of fighting against the bandits
+
+Traceability:
+
+Test cases:
+- The player chooses their skill points, travel around, and randomly encounter bandits
+- Chance of encountering bandits increases as game difficulty increases
+- When the player chose fights the bandits, a comparison of player's fighter skill against bandit's fighter skill is made.
+- If the player's fighter skill is > bandit's fighter skill, the player wins the fight. Player proceeds to
+destination, and player also gets a portion of bandit's credit
+- If the player's fighter skill is <= bandit's fighter skill, the player loses all credits,
+loses a portion of ship's hp, but player proceeds to destination
+- Test multiple bandit encounters and fights to make sure that fighting will keep working as intended
+
+Expected output:
+    Player wins the fight:
+        - The player gains a portion of bandit's credits
+        - Ship remains unharmed
+        - Reaches destination after fight
+        - Fuel decreased
+
+    Player loses the fight:
+        - The player loses all credits
+        - Ship is damaged
+        - Game ends if bandit's damage exceeds ship's current health
+        - Player proceeds to destination, fuel should be decreased
+
+Actual output:
+    Results shown in screen after multiple test are consistent
+    Case win have successfully passed the test multiple times
+    Case lose have successfully passed the test multiple times

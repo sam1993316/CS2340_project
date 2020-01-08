@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <div style="text-align:center">
+    <h1>Game over...</h1>
+    <h3>You ran out of health and crashed your ship!</h3>
+    <p>You have to start a new game to continue playing.</p>
+    <a href="{{ url_for('start') }}">{{ form.new_game() }}</a>
+  </div>
+{% endblock %}

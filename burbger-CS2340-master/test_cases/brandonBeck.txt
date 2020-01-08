@@ -1,0 +1,59 @@
+
+Author: Brandon Beck
+ID: 3.0
+Description: Tests purchasing items with insufficient space and currency requirements
+
+It will test that the player cannot make a purchase without sufficient funds but with enough cargo space
+It will test that the player cannot make a purchase without enough cargo space but with sufficient funds
+And it will test both case concurrently as well
+
+Traceability:
+The M5 requirements specify that the player should not be able to purchase items without enough money and space
+
+Effective Use Cases:
+A player object must be made
+It must have a vehicle with an inventory
+It must be interacting with a market in a certain region
+
+Actual Test Case:
+Precondition: A player has been created on medium difficulty with 6 Merchant Skill Points, an Ant ship, has full health, fuel and 500 credits
+Select the Akimiski region and Travel to it. If already in Akimiski do nothing
+View the Market inventory
+Select an item to purchase with the "Buy [item]" button
+Note the price of the item and how much the credits change
+Next buy the most expensive item available until the are not enough credits to buy the next item
+Now attempt to buy the item
+Assert that an "insufficient funds" warning was produced
+Now buy the cheapest item until until there are not enough credits left to buy another
+Now attempt to buy another
+Again assert that an "insufficient funds" warning was produced
+Sell all items in inventory
+Select the Bahamas and travel to it
+A cheap item such as stone or wood should be available
+Purchase 10 of these items
+Now try to buy one more item
+Assert that an "insufficient cargo space" warning was produced
+
+
+Expected Output:
+The player will have enough feul to travel to Akimiski and the Akimiski market will be available
+The player's feul will decrease by the amount specified when the user selects travel
+The player will a discrete amount of items from the market. Then trying to buy another item will result in an error
+The player's credits should reflect the amount of items purchased times the item price less than 500
+The player will travel again with the feul reflecting the change
+Now the player will purchase items until their inventory maxes out at 10 items
+After every item the inventory will show an increase of 1
+
+Actual Output:
+Selected Akimiski and traveled. The fuel amount went down form 600 to 384
+Purchased 7 tools leaving the credits at 31
+Tried buying one more tool and recieved an error message saying insufficient funds
+Sold all items and credits returned to 500
+Then traveled to Bahamas and fuel decreased to 126
+Purchased 10 wood for 1 credit each. Credits decreased to 490 and inventory shoed 10 wood
+Then tried to purchase one more wood
+Recieved an error for insufficient cargo storage
+
+Passed Test case
+
+No fault in the test case

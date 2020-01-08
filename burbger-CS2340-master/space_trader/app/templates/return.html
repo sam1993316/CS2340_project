@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <div style="text-align:center">
+    <h1>You're not done yet!</h1>
+    <h3>Your game isn't over yet.</h3>
+    <p>You can go back to continue playing, or you can start a new game!</p>
+    <a href="{{ url_for('start') }}">{{ form.continue_game() }}</a>
+    <a href="{{ url_for('start') }}">{{ form.new_game() }}</a>
+  </div>
+{% endblock %}

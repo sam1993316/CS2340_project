@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/region_display.css') }}"></link>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/player_pane.css') }}"></link>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/market_display.css') }}"></link>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/map_select.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/market.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/encounters.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+  {{ form.hidden_tag() }}
+  <div class="hidden">
+    <img id="bandana_img" src="{{ url_for('static', filename='img/bandit_bandana.png') }}"></img>
+    <img id="tophat_img" src="{{ url_for('static', filename='img/trader_tophat.png') }}"></img>
+    <img id="helmet_img" src="{{ url_for('static', filename='img/police_helmet.png') }}"></img>
+  </div>
+  <h2>Welcome to Space Trader!</h2>
+  <div id="player_status_container">
+    <h3>{{ player.name }}</h3>
+    <div id="player_status">
+      <div class="player_detail">
+        <h4>Difficulty:</h4>
+        {{ game.difficulty_name }}
+      </div>
+      <div class="player_detail">
+        <h4>Your skills:</h4>
+        {% for skill in player.skills %}
+          {{ skill|capitalize }}: <span id="{{ skill }}">{{ player.skills[skill] }}</span><br />
+        {% endfor %}
+      </div>
+      <div class="player_detail">
+        <h4>Your money:</h4>
+        <span id="money">{{ player.money }}</span> credits
+      </div>
+      <div class="player_detail">
+        <h4>Your ship:</h4>
+        <p>{{ player.ship.name }} class ship</p>
+        <p><span id="curr_fuel">{{ player.ship.curr_fuel }}</span>/<span id="fuel_capacity">{{ player.ship.fuel_capacity }}</span> fuel</p>
+        <p><span id="curr_health">{{ player.ship.curr_health }}</span>/<span id="health_capacity">{{ player.ship.health }}</span> HP</p>
+      </div>
+    </div>
+  </div>
+  <div class="br"></div>
+  <div id="markets">
+    {% for region in universe.regions %}
+      <div id="{{ region.name }}_market"
+           {% if player.location is sameas region %}
+             class="market show"
+           {% else %}
+             class="market"
+           {% endif %}>
+           <h3 id="market_name">{{ region.name }}</h3>
+           <div id="market_contents">
+             <div class="item_container">
+               <div class="item_info quantity header">Quantity</div>
+               <div class="item_info name header">Item</div>
+               <div class="item_info buy_price header">Buy Price</div>
+               <div class="item_info buy header">Buy</div>
+             </div>
+             {% for key in region.marketplace.stock %}
+               <div class="item_container">
+                 <div class="item_info quantity">{{ (region.marketplace.stock[key]['amt']) }}</div>
+                 <div class="item_info name">{{ key|capitalize }}</div>
+                 <div class="item_info buy_price">{{ region.marketplace.prices[key]|round|int }} ea.</div>
+                 <button class="item_info buy"
+                         type="button"
+                         item="{{ key }}"
+                         region="{{ region.name }}"
+                         onclick="buyItem(event)">
+                         Buy {{ key }}
+                 </button>
+               </div>
+             {% endfor %}
+           </div>
+      </div>
+    {% endfor %}
+    <div class="br"></div>
+    <h3 id="player_inv_label">Your Inventory</h3>
+    <div id="player_inventory">
+    </div>
+    <div class="br"></div>
+    <div id="general_actions">
+      <button type="button" onclick="refuel(event)">Refuel</button>
+      <input type="number" name="fuel_amount" id="refuel_amount" min="1" max="{{ player.ship.fuel_capacity }}" value="1">
+      <span id="refuel_price"></span>
+      <button type="button" onclick="repair(event)">Repair</button>
+      <input type="number" name="repair_amount" id="repair_amount" min="1" max="{{ player.ship.health }}" value="1">
+      <span id="repair_price"></span>
+    </div>
+  </div>
+  <div id="encounters" class="hidden">
+    <img id="encounter_img" src="" width="100"></img>
+    <h3><span id="encounter_type"></span> encounter</h3>
+    <p id="encounter_description"></p>
+    <button id="encounter_pay" type="button" onclick="pay()">Pay</button>
+    <button id="encounter_leave" type="button" onclick="leave()">Leave</button>
+    <button id="encounter_fight" type="button" onclick="fight()">Fight</button>
+    <button id="encounter_negotiate" type="button" onclick="negotiate()">Negotiate</button>
+  </div>
+  <div class="br"></div>
+  <h3>{{ universe.name }}</h3>
+  <div id="universe_info_container">
+    <div id="map_container">
+      <div id="map"
+           style="--width:{{ universe.width }};
+                  --height:{{ universe.height }};">
+        {% for region in universe.regions %}
+          <div class="region_container"
+               style="--x-pos:{{ region.position[0] }};
+                      --y-pos:{{ region.position[1] }};">
+            <div
+              {% if player.location is sameas region %}
+                id="active"
+              {% endif %}
+              class="region_marker"
+              onclick="regionSelected(event)"></div>
+            <div class="region_info" techlevel="{{ region.tech_level.value }}">
+              <p class="region_name">{{ region.name|title }}</p>
+              <p>{{ region.tech_level_name }}</p>
+              <p>at {{ region.position[0] }}, {{ region.position[1] }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div id="map_status">
+      <div>
+        You are here:
+        <div id="current_region" class="region_info show active" techlevel="{{ player.location.tech_level.value }}">
+          <p class="region_name">{{ player.location.name }}</p>
+          <p>{{ player.location.tech_level_name }}</p>
+          <p>at {{ player.location.position[0] }}, {{ player.location.position[1] }}</p>
+        </div>
+      </div>
+      <div>
+        Travel to:
+        <div id="selected_region" class="region_info show selected">
+          <p>
+            No region selected.
+          </p>
+        </div>
+        <div>
+          <br/>
+          <button type="button" disabled id="travel_button" onclick="attemptTravel(event)">Travel to <br/><span id="location_name"></span></button>
+          <p>Cost: <span id="fuel_cost">0</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock main %}
